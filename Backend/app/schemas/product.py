@@ -1,8 +1,7 @@
-from pydantic import BaseModel, ConfigDict, StringConstraints
+from pydantic import BaseModel, StringConstraints
 from typing_extensions import Annotated
 
 class Product(BaseModel):
-    model_config =  ConfigDict(from_attributes=True)
 
     id: int | None = None
     name: Annotated[str, StringConstraints(max_length=50)]
@@ -10,3 +9,6 @@ class Product(BaseModel):
     category: Annotated[str, StringConstraints(max_length=50)]
     price: float
     stock: int
+
+    class Config:
+        orm_mode = True

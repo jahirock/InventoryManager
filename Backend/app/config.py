@@ -1,8 +1,3 @@
-from sqlalchemy import create_engine
-from sqlalchemy.engine import URL
-from sqlalchemy.orm import sessionmaker
-from app.models.databaseTablesOrm import Base
-
 import os
 
 DBUSER = os.getenv('INV_DB_USER')
@@ -13,25 +8,6 @@ DBNAME = os.getenv('INV_DB_NAME')
 if not DBUSER or not DBPASS or not DBHOST or not DBNAME:
     raise ValueError("No se encontraron las variables de entorno para la base de datos")
 
-SQLALCHEMY_DATABASE_URL = URL.create(
-    drivername="postgresql",
-    username=f"{DBUSER}",
-    password=f"{DBPASS}",
-    host=f"{DBHOST}",
-    database=f"{DBNAME}",
-    port=5432
-)
-
-engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-def getDBSession():
-    session = SessionLocal()
-    try:
-        yield session
-    finally:
-        session.close()
-
-def createDBTables():
-    Base.metadata.create_all(engine)
+SECRET_KEY = "aeac1f35333f6ceb4a4eaee6f253b211599cd885d474bb7b9ac3a945466ab178"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
