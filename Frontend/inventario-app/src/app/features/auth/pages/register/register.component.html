@@ -1,0 +1,20 @@
+<div class="container center-large">
+  <div class="p-4 border rounded">
+    <div class="container">
+      <h2 class="row">Registro de usuarios</h2>
+      <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+        <div class="row mb-3">
+          <label for="username">Usuario:</label>
+          <input type="text" id="username" #userInput [(ngModel)]="username" name="username" class="form-control" required maxlength="50" (keypress)="preventSpaces($event)">
+          
+          <label for="password">Password:</label>
+          <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control" required maxlength="50">
+        </div>
+        
+        <div class="row">
+          <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid || !registerForm.dirty">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

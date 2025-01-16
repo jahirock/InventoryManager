@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -14,8 +14,13 @@ import Swal from 'sweetalert2';
 export class RegisterComponent {
   username = '';
   password = '';
+  @ViewChild('userInput') user!: ElementRef;
 
   constructor(private authService: AuthService, private router: Router) {}
+
+  ngAfterViewInit() {
+    this.user.nativeElement.focus();
+  }
 
   onRegister() {
     this.authService.register(this.username, this.password).subscribe({
@@ -33,7 +38,6 @@ export class RegisterComponent {
         });
       },
       error: (error) => {
-        console.error('Registration error:', error);
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -45,5 +49,11 @@ export class RegisterComponent {
         });
       }
     });
+  }
+
+  preventSpaces(event: KeyboardEvent): void {
+    if (event.code === 'Space' || event.key === ' ') {
+      event.preventDefault();
+    }
   }
 }

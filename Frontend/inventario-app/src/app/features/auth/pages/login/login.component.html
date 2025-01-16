@@ -3,18 +3,18 @@
   <div class="p-4 border rounded">
     <div class="container">
       <h2 class="row">Inicio de sesion</h2>
-      <form (ngSubmit)="onLogin()">
+      <form (ngSubmit)="onLogin()" #loginForm="ngForm">
         <div class="row mb-3">
           <label for="username">Usuario:</label>
-          <input type="text" id="username" [(ngModel)]="username" name="username" class="form-control" required>
+          <input type="text" id="username" #userInput [(ngModel)]="username" name="username" class="form-control" required maxlength="50" (keypress)="preventSpaces($event)">
           
           <label for="password">Password:</label>
-          <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control" required>
+          <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control" required maxlength="50">
     
         </div>
         
         <div class="row">
-          <button type="submit" class="btn btn-primary">Iniciar sesion</button>
+          <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid || !loginForm.dirty">Iniciar sesion</button>
         
           <button class="btn btn-link" [routerLink]="['/register']">Registrar usuario</button>
         </div>

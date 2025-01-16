@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -15,7 +15,13 @@ export class LoginComponent {
   username = '';
   password = '';
 
+  @ViewChild('userInput') user!: ElementRef;
+
   constructor(private authService: AuthService, private router: Router) {}
+
+  ngAfterViewInit() {
+    this.user.nativeElement.focus();
+  }
 
   onLogin() {
     this.authService.login(this.username, this.password).subscribe(
@@ -24,10 +30,16 @@ export class LoginComponent {
           this.router.navigate(['/inventory']);
         }, 
         error: (error) => {
+          var message = 'No se puede iniciar sesion. ';
+
+          if(error.status == 401){
+            message += error.error.detail;
+          }
+
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: "Ocurrio un error al intentar iniciar sesion.",
+            text: message,
             allowOutsideClick:false,
             customClass:{
               confirmButton:'btn btn-primary bg-danger'
@@ -37,4 +49,11 @@ export class LoginComponent {
       }
     );
   }
+
+  preventSpaces(event: KeyboardEvent): void {
+    if (event.code === 'Space' || event.key === ' ') {
+      event.preventDefault();
+    }
+  }
+
 }

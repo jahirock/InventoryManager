@@ -13,7 +13,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 origins = [
-    "*",
+    "http://frontend:4200",
     "http://localhost:4200",
     "http://localhost",
     "http://localhost:8080",

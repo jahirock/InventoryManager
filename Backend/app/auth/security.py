@@ -19,13 +19,13 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/token")
 
 credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Could not validate credentials",
+    detail="Credenciales invalidas.",
     headers={"WWW-Authenticate": "Bearer"},
 )
 
 input_exception = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST, 
-    detail='Invalid input'
+    detail='Datos invalidos.'
 )
 
 def hash_password(password: str) -> str:

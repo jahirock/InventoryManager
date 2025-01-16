@@ -1,14 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
 import { Product } from '../models/product.model';
 import { InventoryService  } from '../inventory.service';
+import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormsModule, NgForm } from '@angular/forms';
-import Swal from 'sweetalert2';
+import { FormsModule, NgForm } from '@angular/forms';
+import Swal, { SweetAlertResult } from 'sweetalert2';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-inventory',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.scss'
 })
@@ -18,8 +20,7 @@ export class InventoryComponent {
   isEditMode = false;
   @ViewChild('productForm') productForm!: NgForm;
   
-  constructor(private inventoryService: InventoryService) {
-  }
+  constructor(private inventoryService: InventoryService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
@@ -39,8 +40,8 @@ export class InventoryComponent {
     }
   }
 
-  showErrorMessage(error:string):void{
-    Swal.fire({
+  async showErrorMessage(error:string):Promise<SweetAlertResult<any>>{
+    return await Swal.fire({
       icon: "error",
       title: "Oops...",
       text: error,
@@ -94,7 +95,14 @@ export class InventoryComponent {
         },
         error:(error) => {
           this.desbloquearPagina();
-          if(error.status == 400 && error.error && error.error.detail){
+          if(error.status == 401){
+            this.showErrorMessage("Necesitas iniciar sesion de nuevo.").then(()=>{
+              this.resetForm();
+              this.authService.logout();
+              this.router.navigate(['/login']);
+            });
+          }
+          else if(error.status == 400 && error.error && error.error.detail){
             this.showErrorMessage("No se puede agregar el producto: " + error.error.detail);
           }
           else{
@@ -122,7 +130,14 @@ export class InventoryComponent {
         },
         error: (error) => {
           this.desbloquearPagina();
-          if(error.status == 400 && error.error && error.error.detail){
+          if(error.status == 401){
+            this.showErrorMessage("Necesitas iniciar sesion de nuevo.").then(()=>{
+              this.resetForm();
+              this.authService.logout();
+              this.router.navigate(['/login']);
+            });
+          }
+          else if(error.status == 400 && error.error && error.error.detail){
             this.showErrorMessage("No se puede actualizar el producto: " + error.error.detail);
           }
           else{
@@ -150,7 +165,13 @@ export class InventoryComponent {
             this.loadProducts();
           },
           error:(error) => {
-            if(error.status == 400 && error.error && error.error.detail){
+            if(error.status == 401){
+              this.showErrorMessage("Necesitas iniciar sesion de nuevo.").then(()=>{
+                this.authService.logout();
+                this.router.navigate(['/login']);
+              });
+            }
+            else if(error.status == 400 && error.error && error.error.detail){
               this.showErrorMessage("No se puede eliminar el producto: " + error.error.detail);
             }
             else{
