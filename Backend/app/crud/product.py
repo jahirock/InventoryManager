@@ -8,6 +8,9 @@ def getAllProducts(db:Session, skip: int = 0, limit: int = 0) -> list[ProductMod
 def getProductById(db:Session, id:int) -> ProductModel | None:
     return db.query(ProductModel).filter(ProductModel.id == id).first()
 
+def getProductByName(db:Session, name:str) -> ProductModel | None:
+    return db.query(ProductModel).filter(ProductModel.name == name).first()
+
 def createProduct(db:Session, product: ProductSchena) -> ProductModel:
     prod = ProductModel(
         name=product.name, 
@@ -32,7 +35,7 @@ def updateProduct(db:Session, product:ProductSchena) -> None:
 
     db.commit()
 
-def deleteProduct(db:Session, id:int):
+def deleteProduct(db:Session, id:int) -> None:
     prod = getProductById(db, id)
     db.delete(prod)
     db.commit()
