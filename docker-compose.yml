@@ -1,0 +1,47 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "4200:80"
+    #volumes:
+    #  - ./Frontend/inventario-app:/usr/share/nginx/html
+    restart: always
+    networks:
+      - webnet
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Backend:/app
+    environment:
+      INV_DB_USER: postgres
+      INV_DB_PASS: password
+      INV_DB_HOST: db
+      INV_DB_NAME: inventory
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - webnet
+
+  db:
+    image: postgres:14
+    container_name: postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: inventory
+    ports:
+      - "5432:5432"
+    networks:
+      - webnet
+
+networks:
+  webnet:

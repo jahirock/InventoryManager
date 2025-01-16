@@ -1,0 +1,67 @@
+.inventory {
+  h2 {
+    text-align: center;
+  }
+  table {
+    table-layout:auto;
+    /*width: 100%;
+    border-collapse: collapse;
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #f4f4f4;
+    }*/
+  }
+
+  .is-invalid{
+    border-color: red;
+  }
+
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: #f1f1f1;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+
+  .bg-color-1 {
+    background-color: #f0f0f0;
+  }
+  
+  .bg-color-2 {
+    background-color: #d0d0d0;
+  }
+
+  .nombre{
+    font-size:x-large;
+  }
+
+  .descripcion{
+    font-size: smaller;
+    color:gray;
+  }
+
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay::after {
+  content: 'Cargando...';
+  color: white;
+  font-size: 20px;
+}
