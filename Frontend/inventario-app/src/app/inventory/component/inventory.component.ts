@@ -33,9 +33,14 @@ export class InventoryComponent {
           if(name){
             setTimeout(() => {
               name.focus();
+              if(this.newProduct.price == null) this.newProduct.price=0;
+              if(this.newProduct.stock == null) this.newProduct.stock=0; 
             }, 500);
           }
-        })
+        });
+        myModalEl.addEventListener('hide.bs.modal', event => {
+          this.resetForm();
+        });
       }
     }
   }

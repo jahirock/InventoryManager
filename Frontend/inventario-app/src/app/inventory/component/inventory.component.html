@@ -70,7 +70,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">{{ isEditMode ? 'Actualizar producto' : 'Agregar nuevo producto' }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -111,7 +111,7 @@
                     </div>
                     <div>
                         <label for="stock" class="form-label">Stock</label>
-                        <input type="number" id="stock" class="form-control" [(ngModel)]="newProduct.stock" name="stock" 
+                        <input type="number" id="stock" class="form-control" [(ngModel)]="newProduct.stock" name="stock" min="0"
                             required #stock="ngModel" [ngClass]="{'is-invalid': stock.invalid && (stock.dirty || stock.touched)}"
                         />
                         <div *ngIf="stock.invalid && (stock.dirty || stock.touched)" class="text-danger">
@@ -120,7 +120,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="closeModal" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForm()">Close</button>
+                    <button type="button" id="closeModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || !productForm.dirty">{{ isEditMode ? 'Update Product' : 'Add Product' }}</button>
                 </div>
             </div>
